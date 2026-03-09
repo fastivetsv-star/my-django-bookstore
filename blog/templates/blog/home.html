@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мій Блог і Магазин</title>
+</head>
+<body>
+    <h1>Вітаю у моєму блозі!</h1>
+
+    {% for post in posts %}
+        <div style="border: 1px solid gray; margin-bottom: 10px; padding: 10px;">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content }}</p>
+        </div>
+    {% endfor %}
+
+    <hr> <h1>Наші Товари:</h1>
+
+    <ul> {% for product in products %}
+            <li>
+                <strong><a href="/product/{{ product.id }}/">{{ product.title }}</a></strong> — {{ product.price }} грн.
+                
+                {% if product.is_active %}
+                    <span style="color: green;">(В наявності)</span>
+                {% else %}
+                    <span style="color: red;">(Немає в наявності.)</span>
+                {% endif %}
+                <p><em></em>Відгуки: {{ product.review_count }}</em></p>
+               <ul>
+                    {% for review in product.review_set.all %}
+                        <li style="color: grey;">{{ review.text }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+
+    </ul>
+    </body>
+</html>

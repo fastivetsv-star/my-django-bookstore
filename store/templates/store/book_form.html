@@ -1,0 +1,21 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Форма книги</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div style="line-height: 2;">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">Зберегти</button>
+                    <a href="{% url 'store:book_list' %}" class="btn btn-secondary mt-3">Скасувати</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

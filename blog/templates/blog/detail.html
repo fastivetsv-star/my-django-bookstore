@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.title }}</title>
+</head>                             
+<body>
+    <h1>{{ product.title }}</h1>
+    
+    <div style="border: 1px solid gray; margin-bottom: 10px; padding: 10px;">
+        <p>{{ product.description }}</p>
+        <p><strong>Ціна:</strong> {{ product.price }} грн.</p>
+        {% if product.is_active %}
+            <p style="color: green;"><strong>В наявності</strong></p>
+        {% else %}
+            <p style="color: red;"><strong>Немає в наявності.</strong></p>
+        {% endif %}
+    </div>
+
+    <br>
+    <a href="/">Повернутися на головну</a>
+</body>
+</html>

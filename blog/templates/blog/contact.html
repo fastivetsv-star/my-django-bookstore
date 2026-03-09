@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Контактна інформація</title>
+</head>
+<body>
+    <h1>Контактна інформація</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"style = "padding: 10px; background-color: blue; color: white;">Відправити</button>
+    </form>
+    <br>
+    <a href="/">Повернутися на головну</a>
+</body>
+</html> 

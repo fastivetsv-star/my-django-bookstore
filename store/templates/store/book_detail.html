@@ -1,0 +1,25 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="card shadow-sm mt-4 mb-4">
+    <div class="card-body">
+        <h1 class="card-title">{{ book.title }}</h1>
+        <h4 class="text-muted mb-4">{{ book.author }}</h4>
+        
+        <hr>
+        
+        <h5>Про книгу:</h5>
+        <p class="card-text">{{ book.description }}</p>
+        
+        <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item"><strong>Категорія:</strong> {{ book.category.name }}</li>
+            <li class="list-group-item"><strong>Ціна:</strong> {{ book.price }} грн.</li>
+            <li class="list-group-item"><strong>На складі:</strong> {{ book.stock }} шт.</li>
+        </ul>
+
+        <a href="{% url 'store:book_list' %}" class="btn btn-secondary">← Повернутися до каталогу</a>
+        <a href="{% url 'store:book_update' book.id %}" class="btn btn-warning">Редагувати</a>
+        <a href="{% url 'store:book_delete' book.id %}" class="btn btn-danger">Видалити</a>
+    </div>
+</div>
+{% endblock %}
