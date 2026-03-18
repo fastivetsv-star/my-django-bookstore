@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from blog.views import home , contact , ProductDetailView
+from users.views import RegisterView
 
 handler404 = 'blog.views.custom_404'
 
@@ -26,5 +27,8 @@ urlpatterns = [
     path('contact/', contact),
     path('product/<int:pk>/', ProductDetailView.as_view()),
     path('store/', include('store.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/register/', RegisterView.as_view(), name='register'),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 

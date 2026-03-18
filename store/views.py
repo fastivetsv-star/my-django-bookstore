@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Book
@@ -24,19 +25,22 @@ class BookDetailView(DetailView):
     template_name = 'store/book_detail.html'
     context_object_name = 'book'
 
-class BookCreateView(CreateView):
+class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
     template_name = 'store/book_form.html'
     fields = "__all__"
     success_url = reverse_lazy('store:book_list')
+    login_url = '/accounts/login/'
 
-class BookUpdateView(UpdateView):
+class BookUpdateView(LoginRequiredMixin, UpdateView):
     model = Book
     template_name = 'store/book_form.html'
     fields = "__all__"
     success_url = reverse_lazy('store:book_list')
+    login_url = '/accounts/login/'
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(LoginRequiredMixin, DeleteView):
     model = Book
     template_name = 'store/book_confirm_delete.html'
     success_url = reverse_lazy('store:book_list')
+    login_url = '/accounts/login/'

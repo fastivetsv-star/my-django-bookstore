@@ -13,7 +13,7 @@
         
         <ul class="list-group list-group-flush mb-4">
             <li class="list-group-item"><strong>Категорія:</strong> {{ book.category.name }}</li>
-            <li class="list-group-item"><strong>Ціна:</strong> {{ book.price }} грн.</li>
+            <li class="list-group-item"><strong>Ціна:</strong> {{ book.price|floatformat:2 }} грн.</li>
             <li class="list-group-item"><strong>На складі:</strong> {{ book.stock }} шт.</li>
         </ul>
 

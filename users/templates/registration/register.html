@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class= "col-md-5">
+        <h3 class="text-center m-4">Реєстрація нового користувача</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+           <div style ="line-height: 2;">
+                {{ form.as_p }}
+           </div>
+           <button type="submit" class="btn btn-success w-100">Зареєструватися</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

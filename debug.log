@@ -1,0 +1,11 @@
+GET / completed in 0.18 seconds
+GET /store/ completed in 0.02 seconds
+GET /store/book/1/ completed in 0.01 seconds
+GET /store/ completed in 0.01 seconds
+GET /store/book/3/ completed in 0.01 seconds
+GET /store/ completed in 0.01 seconds
+GET /store/book/create/ completed in 0.02 seconds
+POST /store/book/create/ completed in 0.02 seconds
+GET /store/ completed in 0.01 seconds
+GET /store/ completed in 0.01 seconds
+GET /store/ completed in 0.01 seconds
