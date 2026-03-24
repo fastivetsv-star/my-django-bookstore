@@ -9,3 +9,15 @@ POST /store/book/create/ completed in 0.02 seconds
 GET /store/ completed in 0.01 seconds
 GET /store/ completed in 0.01 seconds
 GET /store/ completed in 0.01 seconds
+GET / completed in 0.18 seconds
+GET /store/ completed in 0.03 seconds
+GET /store/ completed in 0.01 seconds
+GET /store/ completed in 0.01 seconds
+GET / completed in 0.01 seconds
+GET /store/ completed in 0.01 seconds
+GET /__debug__/render_panel/ completed in 0.03 seconds
+GET /store/ completed in 0.01 seconds
+GET /__debug__/render_panel/ completed in 0.02 seconds
+GET /store/ completed in 0.15 seconds
+GET /__debug__/render_panel/ completed in 0.02 seconds
+GET / completed in 0.15 seconds

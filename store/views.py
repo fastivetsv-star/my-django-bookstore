@@ -13,11 +13,12 @@ class BookListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        queryset = Book.objects.select_related('category')  # Оптимізуємо запити до категорій
         if query:
-            return Book.objects.filter(
+            return queryset.filter(
                 Q(title__icontains=query) | Q(author__icontains=query)
             )
-        return Book.objects.all()
+        return queryset.all()
 
 # Клас для детальної сторінки однієї книги
 class BookDetailView(DetailView):
