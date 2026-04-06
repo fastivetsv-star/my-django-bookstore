@@ -30,5 +30,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', RegisterView.as_view(), name='register'),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('', include('orders.urls')),
 ]
 
