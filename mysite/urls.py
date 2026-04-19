@@ -16,20 +16,32 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from blog.views import home , contact , ProductDetailView
+from blog.views import home, contact, product_detail_async 
 from users.views import RegisterView
+from django.conf import settings
+from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 
 handler404 = 'blog.views.custom_404'
 
 urlpatterns = [
+    path('__debug__/', include('debug_toolbar.urls')),
+]
+
+urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
-    path('', home),
-    path('contact/', contact),
-    path('product/<int:pk>/', ProductDetailView.as_view()),
+    path('', home, name='home'),
+    path('contact/', contact, name='contact'),
+    
+    path('product/<int:pk>/', product_detail_async, name='product_detail'),
+    
     path('store/', include('store.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', RegisterView.as_view(), name='register'),
-    path('__debug__/', include('debug_toolbar.urls')),
     path('', include('orders.urls')),
-]
+    path('catalog/', include('products.urls')),
+    path('cart/', include('cart.urls')),
+)
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

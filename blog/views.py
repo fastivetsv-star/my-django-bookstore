@@ -3,38 +3,49 @@ from django.db.models import Q, Count
 from .models import Post, Product
 from .forms import ContactForm
 from django.http import HttpResponse
-from django.views.generic import DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
+import asyncio 
 
-def home(request):
-    all_posts = Post.objects.all()
-    smart_products = Product.objects.filter(
+async def home(request):
+    posts_query = Post.objects.all()
+    all_posts = []
+    async for post in posts_query:
+        all_posts.append(post)
+
+
+    smart_products_query = Product.objects.filter(
         Q(is_active=True) | Q(price__lt=5000)
-        ).annotate(review_count=Count('review')).prefetch_related('review_set')
+    ).annotate(review_count=Count('review')).prefetch_related('review_set')
+
+    smart_products = []
+    async for product in smart_products_query:
+        smart_products.append(product)
     
     return render(request, 'blog/home.html', {
         'posts': all_posts,
         'products': smart_products
     })
 
-def contact(request):
+async def contact(request):
     if request.method == 'POST':
+
         form = ContactForm(request.POST)
         if form.is_valid():
             user_email = form.cleaned_data['email']
-            # Здесь можно обработать данные, например, отправить email
-            return HttpResponse(f'Спасибо за ваше сообщение, {user_email}!')
+            return HttpResponse(f'Дякуємо за повідомлення, {user_email}!')
     else:
+        await asyncio.sleep(0.1) 
         form = ContactForm()
     
     return render(request, 'blog/contact.html', {'form': form})
 
-class ProductDetailView(LoginRequiredMixin, DetailView):
-    model = Product
-    template_name = 'blog/detail.html'
-    context_object_name = 'product'
 
-    login_url = '/admin/login/'  # URL для перенаправления неавторизованных пользователей
+async def product_detail_async(request, pk):
+    try:
+        product = await Product.objects.aget(pk=pk)
+    except Product.DoesNotExist:
+        return render(request, 'errors/404.html', status=404)
+        
+    return render(request, 'blog/detail.html', {'product': product})
 
 def custom_404(request, exception):
     return render(request, 'errors/404.html', status=404)

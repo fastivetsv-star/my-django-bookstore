@@ -4,3 +4,11 @@ redis==5.0.1
 pillow
 django-debug-toolbar
 stripe
+Pillow
+celery
+channels
+daphne
+channels-redis
+pytest-django
+pytest-cov
+factory-boy

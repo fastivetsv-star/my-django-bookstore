@@ -10,6 +10,9 @@ class Product(models.Model):
     name = models.CharField(max_length=200, verbose_name="Назва товару")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Ціна")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категорія")
-
+    image = models.ImageField(upload_to="products/", null=True, blank=True, verbose_name="Фото товару")
+    
     def __str__(self):
         return self.name
+    
+    

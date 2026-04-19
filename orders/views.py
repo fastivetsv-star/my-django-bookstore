@@ -10,6 +10,7 @@ from .models import Order, OrderItem
 from products.models import Product
 from .services import create_payment_session
 from cart.cart import Cart # Підключаємо твій новий кошик!
+from .tasks import send_order_email_task
 
 def checkout_view(request):
     cart = Cart(request)
@@ -34,13 +35,7 @@ def checkout_view(request):
         
         cart.clear()
 
-    send_mail(
-        subject=f'Замовлення #{order.id} успішно створено',
-        message=f'Дякуємо за замовлення! Вартість до оплати. Перейдіть до оплати за посиланням.',
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[order.email], # Відправляємо на email клієнта
-        fail_silently=False,
-    )
+    send_order_email_task.delay(order.id)
 
     payment_url = create_payment_session(order)
     return redirect(payment_url)

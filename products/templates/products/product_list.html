@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Наш супер магазин</title>
+</head>
+<body>
+    <h1>Вітрина магазину</h1>
+    
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'checkout' %}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            🛒 Перейти до оформлення (Checkout)
+        </a>
+    </div>
+    
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        {% for product in products %}
+            <div style="border: 1px solid #ccc; padding: 15px; width: 250px; text-align: center;">
+                <h3>{{ product.name }}</h3>
+                
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 100%; height: auto; border-radius: 8px;">
+                {% else %}
+                    <div style="background: #eee; padding: 50px 0; color: #888;">Фото відсутнє</div>
+                {% endif %}
+                
+                <p style="font-size: 20px; font-weight: bold;">{{ product.price }} $</p>
+                
+                <form action="{% url 'cart_add' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Додати в кошик
+                    </button>
+                </form>
+                </div>
+        {% endfor %}
+    </div>
+        <script>
+        // 1. Відкриваємо з'єднання
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/notifications/');
+
+        // 2. Слухаємо повідомлення від сервера
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            // Просто виводимо повідомлення у верхній частині екрана
+            alert("ПОВІДОМЛЕННЯ ВІД DJANGO: " + data.message);
+        };
+
+        // Якщо з'єднання розірвано
+        socket.onclose = function(e) {
+            console.error('Socket закрився');
+        };
+    </script>
+</body>
+</html>
