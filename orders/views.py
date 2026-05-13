@@ -1,16 +1,47 @@
-from django.core.mail import send_mail
+import asyncio
 import json
 import stripe
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.core.mail import send_mail
 from django.db import transaction
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+
+# Импорты для REST API
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsOwnerOrReadOnly
+from .serializers import OrderSerializer
+
 from .models import Order, OrderItem
 from products.models import Product
 from .services import create_payment_session
-from cart.cart import Cart # Підключаємо твій новий кошик!
+from cart.cart import Cart
 from .tasks import send_order_email_task
+
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        
+        if not user.is_authenticated:
+            return Order.objects.none()
+            
+        return Order.objects.filter(customer=user).prefetch_related('items').order_by('-id')
+
+    def perform_create(self, serializer):
+        with transaction.atomic():
+            # Сохраняем заказ
+            order = serializer.save(customer=self.request.user)
+            # Отправляем письмо через Celery задачу
+            send_order_email_task.delay(order.id)
+
+
 
 def checkout_view(request):
     cart = Cart(request)
@@ -21,7 +52,7 @@ def checkout_view(request):
     with transaction.atomic():
         order = Order.objects.create(
             customer=request.user if request.user.is_authenticated else None,
-            email="customer@example.com" 
+            email=request.user.email if request.user.is_authenticated else "customer@example.com" 
         )
         
         for item_id, item_data in cart.cart.items():

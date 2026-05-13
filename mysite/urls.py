@@ -22,19 +22,44 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 
+from rest_framework.routers import DefaultRouter
+from products.views import ProductViewSet, CategoryViewSet
+
+from orders.views import OrderViewSet
+from cart.views import CartViewSet
+
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
 handler404 = 'blog.views.custom_404'
+
+router = DefaultRouter()
+router.register(r'products', ProductViewSet, basename='product')
+router.register(r'categories', CategoryViewSet, basename='category')
+
+
+router.register(r'orders', OrderViewSet, basename='order')
+router.register(r'cart', CartViewSet, basename='cart')
+
 
 urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
+    
+    path('api/', include(router.urls)),
+    
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]
 
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('contact/', contact, name='contact'),
-    
     path('product/<int:pk>/', product_detail_async, name='product_detail'),
-    
     path('store/', include('store.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', RegisterView.as_view(), name='register'),
