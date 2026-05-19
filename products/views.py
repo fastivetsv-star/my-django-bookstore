@@ -3,15 +3,18 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.translation import gettext as _ 
 
+from django.core.cache import cache
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from rest_framework.response import Response
+
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
-
 from rest_framework.filters import SearchFilter, OrderingFilter 
 
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
-
 
 
 async def product_list(request):
@@ -29,7 +32,6 @@ async def async_check_stock(request):
         "status": _("В наявності"), 
         "message": _("Товар знайдено на складі після 3 секунд пошуку")
     })
-
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -54,3 +56,22 @@ class ProductViewSet(viewsets.ModelViewSet):
         if self.action in ['list', 'retrieve']:
             return [AllowAny()]
         return [IsAdminUser()]
+
+    @method_decorator(cache_page(60 * 15))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        product_id = kwargs.get('pk')
+        cache_key = f'product_detail_{product_id}'
+        
+        cached_data = cache.get(cache_key)
+        
+        if cached_data is not None:
+            return Response(cached_data)
+            
+        response = super().retrieve(request, *args, **kwargs)
+        
+        cache.set(cache_key, response.data, timeout=60 * 30)
+        
+        return response

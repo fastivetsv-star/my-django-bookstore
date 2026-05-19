@@ -13,7 +13,15 @@ import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta 
+from celery.schedules import crontab
+import sentry_sdk
 
+sentry_sdk.init(
+
+    dsn="https://example@sentry.io/123", 
+    
+    traces_sample_rate=1.0,
+)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-+%*(k_qf^st5jo_jd!s_6ocy1dzr+qyxjnyb+u%p@n(5h(6_be'
@@ -137,7 +145,30 @@ DEFAULT_FROM_EMAIL = 'shop@superstore.com'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Адреса Redis (контейнер 'redis' у Docker, порт 6379)
 CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+# Налаштування формату даних
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+CELERY_BEAT_SCHEDULE = {
+    'clear-sessions-every-night': {
+        'task': 'orders.tasks.clear_expired_sessions_task',
+        'schedule': crontab(hour=0, minute=0),
+    },
+    'generate-report-every-morning': {
+        'task': 'orders.tasks.generate_sales_report_task',
+        'schedule': crontab(hour=8, minute=0),
+    },
+    'test-report-every-minute': {
+        'task': 'orders.tasks.generate_sales_report_task',
+        'schedule': crontab(minute='*'), # Зірочка означає "кожної хвилини"
+    },
+}
 
 CHANNEL_LAYERS = {
     "default": {
@@ -205,4 +236,11 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API для книжного магазина (Товары, Категории)',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379/1", # Використовуємо базу 1, щоб не заважати Celery
+    }
 }

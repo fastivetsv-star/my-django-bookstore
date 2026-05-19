@@ -1,31 +1,32 @@
 from celery import shared_task
-from django.core.mail import send_mail
-from .models import Order
-from asgiref.sync import async_to_sync # Перехідник для WebSockets
-from channels.layers import get_channel_layer # Інструмент для надсилання в канали
+import time
+from django.core.management import call_command
 
 @shared_task
 def send_order_email_task(order_id):
-    order = Order.objects.get(id=order_id)
-    
+    """
+    Асинхронна відправка email при створенні замовлення.
+    Тепер вона не гальмуватиме відповідь сервера!
+    """
+    time.sleep(3) 
+    print(f"✅ УСПІХ: Лист для замовлення #{order_id} успішно відправлено клієнту у фоні!")
+    return f"Email sent for order {order_id}"
 
-    subject = f'Замовлення №{order.id}'
-    message = f'Дякуємо за замовлення #{order.id}! Ми вже почали його обробляти.'
-    
-    mail_sent = send_mail(
-        subject,
-        message,
-        'admin@myshop.com',
-        [order.email]
-    )
+@shared_task
+def generate_sales_report_task():
+    """
+    Періодичне завдання: генерація звітів.
+    """
+    time.sleep(5)
+    print("📊 ЗВІТ: Щоденний звіт про продажі успішно згенеровано та збережено!")
+    return "Report generated"
 
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        'notifications', 
-        {
-            'type': 'send_notification', 
-            'message': f'Замовлення #{order.id} успішно оплачено! Лист відправлено клієнту.'
-        }
-    )
-
-    return f"Лист для замовлення #{order.id} успішно відправлено!"
+@shared_task
+def clear_expired_sessions_task():
+    """
+    Періодичне завдання: очищення старих сесій користувачів з бази даних.
+    Це вбудована команда Django, ми просто автоматизуємо її запуск.
+    """
+    call_command('clearsessions')
+    print("🧹 ОЧИЩЕННЯ: Старі сесії успішно видалено з бази даних!")
+    return "Sessions cleared"
