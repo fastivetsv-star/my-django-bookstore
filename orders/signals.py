@@ -5,6 +5,8 @@ from .models import Order
 
 @receiver(post_save, sender=Order)
 def order_created(sender, instance, created, **kwargs):
-    
+
     if created:
-        print(f"🎉 МАГІЯ: Нове замовлення успішно створено! ID: {instance.id}, Клієнт: {instance.customer}")
+        print(
+            f"🎉 МАГІЯ: Нове замовлення успішно створено! ID: {instance.id}, Клієнт: {instance.customer}"
+        )

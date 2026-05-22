@@ -9,22 +9,21 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+
 import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
-from datetime import timedelta 
+from datetime import timedelta
 from celery.schedules import crontab
 import sentry_sdk
 
 sentry_sdk.init(
-
-    dsn="https://example@sentry.io/123", 
-    
+    dsn="https://example@sentry.io/123",
     traces_sample_rate=1.0,
 )
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-+%*(k_qf^st5jo_jd!s_6ocy1dzr+qyxjnyb+u%p@n(5h(6_be'
+SECRET_KEY = "django-insecure-+%*(k_qf^st5jo_jd!s_6ocy1dzr+qyxjnyb+u%p@n(5h(6_be"
 
 
 DEBUG = True
@@ -32,141 +31,149 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'daphne',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
-    'blog',
-    'store',
-    'users',
-    'debug_toolbar',
-    'products',
-    'cart',
-    'orders',
-    'channels',
-    
-    'corsheaders',               
-    'rest_framework',            
-    'rest_framework_simplejwt',  
-    'django_filters',            
-    'drf_spectacular',
+    "daphne",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "blog",
+    "store",
+    "users",
+    "debug_toolbar",
+    "products",
+    "cart",
+    "orders",
+    "channels",
+    "corsheaders",
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "django_filters",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware', 
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'store.middleware.SimpleLoggingMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "store.middleware.SimpleLoggingMiddleware",
 ]
 
-ROOT_URLCONF = 'mysite.urls'
+ROOT_URLCONF = "mysite.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
-ASGI_APPLICATION = 'mysite.asgi.application'
+WSGI_APPLICATION = "mysite.wsgi.application"
+ASGI_APPLICATION = "mysite.asgi.application"
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'superbook_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'super_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'super_secret_password'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "superbook_db"),
+        "USER": os.environ.get("POSTGRES_USER", "super_user"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "super_secret_password"),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
-AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_REDIRECT_URL = '/store/'
-LOGOUT_REDIRECT_URL = '/store/'
-INTERNAL_IPS = ['127.0.0.1',]
+AUTH_USER_MODEL = "users.CustomUser"
+LOGIN_REDIRECT_URL = "/store/"
+LOGOUT_REDIRECT_URL = "/store/"
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'debug.log',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "debug.log",
         },
     },
-    'loggers': {
-        'store_logger': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
+    "loggers": {
+        "store_logger": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": True,
         },
-    }, 
+    },
 }
 
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 
-CART_SESSION_ID = 'cart'
+CART_SESSION_ID = "cart"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'shop@superstore.com'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "shop@superstore.com"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Адреса Redis (контейнер 'redis' у Docker, порт 6379)
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 
 # Налаштування формату даних
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "UTC"
 
 CELERY_BEAT_SCHEDULE = {
-    'clear-sessions-every-night': {
-        'task': 'orders.tasks.clear_expired_sessions_task',
-        'schedule': crontab(hour=0, minute=0),
+    "clear-sessions-every-night": {
+        "task": "orders.tasks.clear_expired_sessions_task",
+        "schedule": crontab(hour=0, minute=0),
     },
-    'generate-report-every-morning': {
-        'task': 'orders.tasks.generate_sales_report_task',
-        'schedule': crontab(hour=8, minute=0),
+    "generate-report-every-morning": {
+        "task": "orders.tasks.generate_sales_report_task",
+        "schedule": crontab(hour=8, minute=0),
     },
-    'test-report-every-minute': {
-        'task': 'orders.tasks.generate_sales_report_task',
-        'schedule': crontab(minute='*'), # Зірочка означає "кожної хвилини"
+    "test-report-every-minute": {
+        "task": "orders.tasks.generate_sales_report_task",
+        "schedule": crontab(minute="*"),  # Зірочка означає "кожної хвилини"
     },
 }
 
@@ -174,55 +181,44 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis", 6379)], 
+            "hosts": [("redis", 6379)],
         },
     },
 }
 
-LANGUAGE_CODE = 'uk'
+LANGUAGE_CODE = "uk"
 USE_I18N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ('uk', _('Ukrainian')),
-    ('en', _('English')),
+    ("uk", _("Ukrainian")),
+    ("en", _("English")),
 ]
 
 LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, "locale"),
 ]
 
 
-
-
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
-    
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend'
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
     ],
-    
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/day',
-        'user': '1000/day'
-    }
+    "DEFAULT_THROTTLE_RATES": {"anon": "100/day", "user": "1000/day"},
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 CORS_ALLOWED_ORIGINS = [
@@ -232,15 +228,15 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Bookstore API',
-    'DESCRIPTION': 'API для книжного магазина (Товары, Категории)',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "Bookstore API",
+    "DESCRIPTION": "API для книжного магазина (Товары, Категории)",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis:6379/1", # Використовуємо базу 1, щоб не заважати Celery
+        "LOCATION": "redis://redis:6379/1",  # Використовуємо базу 1, щоб не заважати Celery
     }
 }

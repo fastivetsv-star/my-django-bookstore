@@ -6,16 +6,19 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0003_remove_order_product_order_email_and_more'),
+        ("orders", "0003_remove_order_product_order_email_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='order',
-            options={'verbose_name': 'Замовлення', 'verbose_name_plural': 'Замовлення'},
+            name="order",
+            options={"verbose_name": "Замовлення", "verbose_name_plural": "Замовлення"},
         ),
         migrations.AlterModelOptions(
-            name='orderitem',
-            options={'verbose_name': 'Товар у замовленні', 'verbose_name_plural': 'Товари у замовленні'},
+            name="orderitem",
+            options={
+                "verbose_name": "Товар у замовленні",
+                "verbose_name_plural": "Товари у замовленні",
+            },
         ),
     ]

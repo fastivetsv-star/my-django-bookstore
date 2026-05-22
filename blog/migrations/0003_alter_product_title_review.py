@@ -7,21 +7,34 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0002_product'),
+        ("blog", "0002_product"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='title',
+            model_name="product",
+            name="title",
             field=models.CharField(max_length=255),
         ),
         migrations.CreateModel(
-            name='Review',
+            name="Review",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(max_length=255)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("text", models.CharField(max_length=255)),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="blog.product"
+                    ),
+                ),
             ],
         ),
     ]

@@ -8,34 +8,76 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0002_order_status'),
-        ('products', '0001_initial'),
+        ("orders", "0002_order_status"),
+        ("products", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='order',
-            name='product',
+            model_name="order",
+            name="product",
         ),
         migrations.AddField(
-            model_name='order',
-            name='email',
-            field=models.EmailField(default='test@example.com', max_length=254, verbose_name='Email для чека'),
+            model_name="order",
+            name="email",
+            field=models.EmailField(
+                default="test@example.com",
+                max_length=254,
+                verbose_name="Email для чека",
+            ),
         ),
         migrations.AlterField(
-            model_name='order',
-            name='customer',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Клієнт'),
+            model_name="order",
+            name="customer",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Клієнт",
+            ),
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Ціна під час покупки')),
-                ('quantity', models.PositiveIntegerField(default=1, verbose_name='Кількість')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='orders.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_items', to='products.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "price",
+                    models.DecimalField(
+                        decimal_places=2,
+                        max_digits=10,
+                        verbose_name="Ціна під час покупки",
+                    ),
+                ),
+                (
+                    "quantity",
+                    models.PositiveIntegerField(default=1, verbose_name="Кількість"),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="items",
+                        to="orders.order",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="order_items",
+                        to="products.product",
+                    ),
+                ),
             ],
         ),
     ]

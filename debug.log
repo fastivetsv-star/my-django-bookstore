@@ -582,3 +582,5 @@ POST /api/products/ completed in 0.00 seconds
 GET /api/products/ completed in 0.01 seconds
 GET /api/products/ completed in 0.00 seconds
 GET /api/products/ completed in 0.00 seconds
+GET /health/ completed in 0.00 seconds
+GET /favicon.ico completed in 0.01 seconds
