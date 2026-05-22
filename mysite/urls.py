@@ -30,19 +30,22 @@ from cart.views import CartViewSet
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.http import JsonResponse
+
+def health_check(request):
+    return JsonResponse({"status": "healthy"})
 
 handler404 = 'blog.views.custom_404'
 
 router = DefaultRouter()
 router.register(r'products', ProductViewSet, basename='product')
 router.register(r'categories', CategoryViewSet, basename='category')
-
-
 router.register(r'orders', OrderViewSet, basename='order')
 router.register(r'cart', CartViewSet, basename='cart')
 
-
 urlpatterns = [
+    path('health/', health_check), 
+    
     path('__debug__/', include('debug_toolbar.urls')),
     
     path('api/', include(router.urls)),
