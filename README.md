@@ -1,5 +1,7 @@
-[![Django CI/CD Pipeline](https://github.com/fastivetsv-star/my-django-bookstore/actions/workflows/django.yml/badge.svg)](https://github.com/fastivetsv-star/my-django-bookstore/actions/workflows/django.yml)
 # Django E-commerce Project (Книжковий магазин)
+
+[![Django CI/CD Pipeline](https://github.com/fastivetsv-star/my-django-bookstore/actions/workflows/django.yml/badge.svg)](https://github.com/fastivetsv-star/my-django-bookstore/actions/workflows/django.yml)
+![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen.svg)
 
 Сучасний інтернет-магазин, розроблений на базі Django з використанням асинхронних views (async/await), інтеграцією платежів, багатомовністю (i18n) та покриттям тестами понад 80%.
 
