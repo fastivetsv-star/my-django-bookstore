@@ -58,3 +58,8 @@ class BookDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "store/book_confirm_delete.html"
     success_url = reverse_lazy("store:book_list")
     login_url = "/accounts/login/"
+
+from django.http import JsonResponse
+
+def health_check(request):
+    return JsonResponse({"status": "ok"})
