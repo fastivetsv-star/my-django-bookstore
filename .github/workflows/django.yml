@@ -7,6 +7,22 @@ on:
 jobs:
   test-and-lint:
     runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: superbook_db
+          POSTGRES_USER: super_user
+          POSTGRES_PASSWORD: super_secret_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - name: Завантаження коду
       uses: actions/checkout@v3
@@ -14,7 +30,7 @@ jobs:
     - name: Встановлення Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11' 
+        python-version: '3.11'
 
     - name: Встановлення залежностей
       run: |
@@ -30,11 +46,12 @@ jobs:
     - name: Запуск тестів (Pytest + Coverage)
       env:
         SECRET_KEY: 'dummy-secret-key-for-tests'
+        DB_HOST: localhost # Вказуємо тестам шукати базу даних локально
       run: |
         pytest --cov=.
 
   build-and-push:
-    needs: test-and-lint 
+    needs: test-and-lint
     runs-on: ubuntu-latest
     steps:
     - name: Завантаження коду
