@@ -8,6 +8,7 @@ jobs:
   test-and-lint:
     runs-on: ubuntu-latest
     
+    # Наші тимчасові сервіси для тестів
     services:
       postgres:
         image: postgres:15-alpine
@@ -22,6 +23,12 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          
+      # ДОДАНО: Сервіс Redis для кешування та Celery
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
 
     steps:
     - name: Завантаження коду
@@ -37,6 +44,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    # ДОДАНО: Вчимо робота розуміти ім'я "redis"
+    - name: Налаштування хостів (щоб тести знайшли Redis)
+      run: echo "127.0.0.1 redis" | sudo tee -a /etc/hosts
+
     - name: Перевірка стилю коду (Black)
       run: black --check .
 
@@ -46,9 +57,10 @@ jobs:
     - name: Запуск тестів (Pytest + Coverage)
       env:
         SECRET_KEY: 'dummy-secret-key-for-tests'
-        DB_HOST: localhost # Вказуємо тестам шукати базу даних локально
+        DB_HOST: localhost 
       run: |
         pytest --cov=.
+
 
   build-and-push:
     needs: test-and-lint
