@@ -1,22 +1,20 @@
-# Django E-commerce Project (Книжковий магазин)
+# 🚀 Microservice E-commerce Platform (Книжковий магазин)
 
 [![Django CI/CD Pipeline](https://github.com/fastivetsv-star/my-django-bookstore/actions/workflows/django.yml/badge.svg)](https://github.com/fastivetsv-star/my-django-bookstore/actions/workflows/django.yml)
 ![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen.svg)
 
-Сучасний інтернет-магазин, розроблений на базі Django з використанням асинхронних views (async/await), інтеграцією платежів, багатомовністю (i18n) та покриттям тестами понад 80%.
+Сучасний інтернет-магазин, розроблений на базі Django. Проєкт еволюціонував у повноцінну **мікросервісну архітектуру** (Project A — Магазин, Project B — Платіжний шлюз) з використанням REST API комунікації, асинхронних views, багатомовності (i18n) та фонових задач. Усе запаковано в єдине середовище Docker Compose.
 
-## 🚀 Технології
-* Python 3.12, Django 5.x
-* PostgreSQL (через Docker)
-* Pytest + Factory Boy (для тестування)
-* Celery + Redis (для фонових задач)
-* Docker & Docker Compose
+## 🏗 Архітектурна діаграма
 
-## 🤖 AI Usage (Використання ШІ)
-У цьому проєкті активно використовувався AI (LLM) для прискорення розробки та покращення якості коду згідно з сучасними практиками:
-
-1. **Code Review:** ШІ провів аналіз 3-х складних views. Було виявлено та виправлено потенційні проблеми з продуктивністю (N+1 queries), додано ліміти для економії пам'яті та замінено `try/except` на виклик `Http404` у асинхронних функціях. Деталі у файлі `AI_REVIEW.md`.
-2. **Генерація тестів:** AI був використаний для написання модульних тестів (з використанням `pytest` та `factory_boy`) для моделей `Order` та `OrderItem`. Покриття коду цих моделей склало 100%.
-3. **Документація:** AI згенерував Google-style docstrings для основних views та допоміг структурувати цей README-файл.
-
-> Всі промпти (запити до ШІ), які були використані під час роботи над проєктом, збережені у файлі `AI_PROMPTS.md`.
+```mermaid
+graph TD
+    Client[Клієнт / Браузер] --> NGINX[NGINX Reverse Proxy :80]
+    NGINX --> ProjectA[Project A: Store backend :8001]
+    
+    ProjectA --> Redis[(Redis Cache/Broker :6379)]
+    ProjectA --> Celery[Celery Workers & Beat]
+    ProjectA --> DB_A[(PostgreSQL: store_db)]
+    
+    ProjectA -- "REST API (HTTP POST)" --> ProjectB[Project B: Payment Gateway :8000]
+    ProjectB --> DB_B[(PostgreSQL: payment_db)]
